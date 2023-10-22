@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Heading } from 'grommet';
+import {Box, Heading} from 'grommet';
 import Section from './Section';
 
-const InfoBar = ({ message, gameId }) => (
+const InfoBar = ({message, gameId, color}) => (
 
     <Box>
-        <Section pad={{ top: "small", bottom: "none" }}>
+        <Section pad={{top: "small", bottom: "none"}}>
             <Box justify="center" align="center" direction="row" gap="xlarge">
                 <Box justify="center" align="center" direction="row">
                     <Heading level="3" size="medium" margin="none" justify="center">
@@ -14,10 +14,10 @@ const InfoBar = ({ message, gameId }) => (
                 </Box>
             </Box>
         </Section>
-        <Section pad={{ top: "small", bottom: "small" }}>
+        <Section pad={{top: "small", bottom: "small"}}>
             <Box justify="center" align="center" direction="row" gap="xlarge">
                 <Box justify="center" align="center" direction="row">
-                    <Heading level="3" size="medium" margin="none" justify="center">
+                    <Heading level="3" size="medium" margin="none" justify="center" color={color}>
                         {message}
                     </Heading>
                 </Box>

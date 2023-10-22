@@ -8,7 +8,7 @@ public class GameNotFoundExceptionTest {
 
     @Test
     public void testGameNotFoundExceptionMessage() {
-        GameNotFoundException exception = new GameNotFoundException();
-        assertEquals("Game not found", exception.getMessage());
+        GameNotFoundException exception = new GameNotFoundException(123L);
+        assertEquals("Game id 123 not found", exception.getMessage());
     }
 }

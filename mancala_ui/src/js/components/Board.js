@@ -69,11 +69,18 @@ class Board extends React.Component {
                 };
                 fetch(url, requestOptions)
                     .then(response => {
-                        if (response.ok)
-                            return response.json()
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            console.log("HTTP Error:", response.status, response.statusText);
+                            throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+                        }
                     })
                     .then(data => {
                         this.setState({started: true, loading: false, data: data});
+                    })
+                    .catch(err => {
+                        alert(st.gameId + " is not a valid game id. Please try again.");
                     });
             })
 
@@ -158,9 +165,11 @@ class Board extends React.Component {
 
         const {started, error} = this.state;
         var msg = this.getMessage();
+        var msgColor = "blue";
         if (error) {
             var data = this.state.data;
             msg = "Invalid move! Current should be player: " + (data.players[data.nextTurn].name);
+            msgColor = "red";
         }
 
         if (started) {
@@ -168,7 +177,7 @@ class Board extends React.Component {
             var player2 = this.state.data.players[1].name;
             return (<Box margin="none">
 
-                <InfoBar message={msg} gameId={this.state.data.gameId}/>
+                <InfoBar message={msg} gameId={this.state.data.gameId} color={msgColor}/>
 
                 <PlayerDetails playerId="1" playerName={this.state.data.players ? player1 : "Player1"}/>
                 <Box direction="row" gap="medium" justify="center" pad="medium" background={{color: "light-1"}}

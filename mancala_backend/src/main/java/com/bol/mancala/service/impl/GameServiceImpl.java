@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -58,8 +59,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public ResponseEntity<GameDto> joinGame(long gameId) {
-        return gameRepository.findById(gameId).map(gameEntityToDtoMapper::map).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<Game> gameEntity = gameRepository.findById(gameId);
+        if (gameEntity.isPresent()) {
+            return ResponseEntity.ok(gameEntityToDtoMapper.map(gameEntity.get()));
+        } else {
+            throw new GameNotFoundException(gameId);
+        }
     }
 
     @Override
@@ -81,7 +86,7 @@ public class GameServiceImpl implements GameService {
     }
 
     private Game findGameByID(Long gameId) {
-        return gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
+        return gameRepository.findById(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
     }
 
     private boolean isCorrectPlayerId(GamePlayRequest request, Game game) {
