@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=mancala'
+      - 'POSTGRES_PASSWORD=postgres'
+      - 'POSTGRES_USER=postgres'
+    ports:
+      - '5432:5432'
+#    volumes: # Uncomment this if you want to persist data
+#      - ./postgres-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    links:
+      - postgresql
+    depends_on:
+        - postgresql
+    environment:
+        - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/mancala'
+        - 'SPRING_DATASOURCE_USERNAME=postgres'
+        - 'SPRING_DATASOURCE_PASSWORD=postgres'
+
+volumes:
+  postgres-data:

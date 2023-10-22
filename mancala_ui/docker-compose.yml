@@ -1,0 +1,15 @@
+version: '3'
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mancala-ui
+    ports:
+      - "8088:80"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-server
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
